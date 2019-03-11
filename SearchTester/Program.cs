@@ -19,6 +19,7 @@ namespace SearchTester
 
         static public int DisplayMenu()
         {
+            Console.WriteLine();
             Console.WriteLine("Search Tester");
             Console.WriteLine();
             Console.WriteLine("1. Add a document");
