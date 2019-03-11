@@ -26,13 +26,14 @@ namespace AssistMeProject.Models
             Dictionary<string, int> frequencies = new Dictionary<string, int>();
             foreach (String word in words)
             {
-                if(frequencies.ContainsKey(word))
+                string w = word.ToUpper();
+                if(frequencies.ContainsKey(w))
                 {
-                    frequencies[word]++;
+                    frequencies[w]++;
                 }
                 else
                 {
-                    frequencies[word] = 1;
+                    frequencies[w] = 1;
                 }
             }
             return frequencies;
@@ -53,7 +54,7 @@ namespace AssistMeProject.Models
 
         public int CompareTo(SearchDocument other)
         {
-            int val = Score.CompareTo(other.Score);
+            int val = -Score.CompareTo(other.Score);
             if (val == 0 && Value is IComparable)
                 return ((IComparable)Value).CompareTo(other.Value);
             else

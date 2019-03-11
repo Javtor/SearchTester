@@ -10,11 +10,13 @@ namespace SearchTester
     class Program
     {
 
-        public BaseClass bc;
+        public List<Document> Docs;
+        private BM25Searcher _searcher;
 
         Program()
         {
-            bc = new BaseClass();
+            Docs = new List<Document>();
+            _searcher = new BM25Searcher();
             int userInput = 0;
             do
             {
@@ -31,13 +33,13 @@ namespace SearchTester
                         SeeDocuments();
                         break;
                 }
-            } while (userInput != 3);
+            } while (userInput != 4);
         }
 
         private void SeeDocuments()
         {
             int counter = 1;
-            foreach(Document doc in bc.Docs)
+            foreach(Document doc in Docs)
             {
                 Console.WriteLine("Document #" + counter);
                 Console.WriteLine(doc);
@@ -51,24 +53,35 @@ namespace SearchTester
             new Program();
         }
 
-        private static void Query()
+        private void Query()
         {
-            throw new NotImplementedException();
+            Console.Write("Search: ");
+            string line = Console.ReadLine();
+            _searcher.Search(line);
+            int counter = 1;
+            foreach(SearchDocument doc in _searcher.Documents)
+            {
+                Console.WriteLine("Document #" + counter);
+                Console.WriteLine(doc);
+                Console.WriteLine();
+                counter++;
+            }
         }
 
-        private static void AddDocument()
+        private  void AddDocument()
         {
             Console.WriteLine("Write \"0 0\" to stop writing");
             string line = Console.ReadLine();
             StringBuilder sb = new StringBuilder();
             while(line != "0 0")
             {
-                sb.Append(line);
+                sb.Append(line+"\n");
                 line = Console.ReadLine();
             }
+            AddDocument(sb.ToString());
         }
 
-        static public int DisplayMenu()
+         public int DisplayMenu()
         {
             Console.WriteLine();
             Console.WriteLine("Search Tester");
@@ -79,6 +92,13 @@ namespace SearchTester
             Console.WriteLine("4. Exit");
             var result = Console.ReadLine();
             return Convert.ToInt32(result);
+        }
+
+        public void AddDocument(string text)
+        {
+            Document doc = new Document(text);
+            Docs.Add(doc);
+            _searcher.AddDocument(doc);
         }
     }
 }
