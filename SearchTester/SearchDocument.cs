@@ -20,7 +20,7 @@ namespace AssistMeProject.Models
 
         public Dictionary<string, int> GetTermFrequencies()
         {
-            var text = value.GetDocumentText();
+            var text = Value.GetDocumentText();
             var punctuation = text.Where(Char.IsPunctuation).Distinct().ToArray();
             var words = text.Split().Select(x => x.Trim(punctuation));
             Dictionary<string, int> frequencies = new Dictionary<string, int>();
@@ -41,7 +41,7 @@ namespace AssistMeProject.Models
         public int GetWordsCount()
         {
             int count = 0;
-            var text = value.GetDocumentText();
+            var text = Value.GetDocumentText();
             var punctuation = text.Where(Char.IsPunctuation).Distinct().ToArray();
             var words = text.Split().Select(x => x.Trim(punctuation));
             foreach (String word in words)
@@ -54,10 +54,16 @@ namespace AssistMeProject.Models
         public int CompareTo(SearchDocument other)
         {
             int val = Score.CompareTo(other.Score);
-            if (val == 0 && value is IComparable)
-                return ((IComparable)value).CompareTo(other.value);
+            if (val == 0 && Value is IComparable)
+                return ((IComparable)Value).CompareTo(other.Value);
             else
                 return val;
         }
+
+        public override string ToString()
+        {
+            return Value.ToString()+" - Score: "+Score;
+        }
+
     }
 }
